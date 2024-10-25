@@ -6,10 +6,10 @@ python dadac_main.py \
 --env_id Reacher-v4 \
 --delay_mode obs \
 --obs_delay_dis gama \
---act_delay_dis DoubleGaussian \
+--act_delay_dis DoubleGaussian 
 
 delay_mode option:obs/act/both \
-You can add or modify delay distributions in utils/delay_distribution.py \
+You can add or modify delay distributions in utils/delay_distribution.py 
 
 Environment requirements: \
 python 3.8.12 \
@@ -18,4 +18,4 @@ gym-notices==0.0.8 \
 gymnasium==0.29.0 \
 imageio==2.34.2 \
 mujoco==2.2.0 \
-torch==1.12.0 \
+torch==1.12.0 
