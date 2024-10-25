@@ -1,6 +1,6 @@
 Open source code of DADAC
 
-How to run:
+How to run: \
 python dadac_main.py \
 --seed 1 \
 --env_id Reacher-v4 \
