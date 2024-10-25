@@ -12,7 +12,7 @@ delay_mode option:obs/act/both \
 You can add or modify delay distributions in utils/delay_distribution.py 
 
 Environment requirements: \
-python 3.8.12 \
+python==3.8.12 \
 gym==0.26.2 \
 gym-notices==0.0.8 \
 gymnasium==0.29.0 \
