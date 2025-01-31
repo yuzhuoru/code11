@@ -26,13 +26,10 @@ def create_env(**kwargs):
 
     # delay env wrapper
     if kwargs["delay_mode"] == "act":
-        print("!!! act delay mode !!!",kwargs["act_delay_dis"])
         env = ActDelayWrapper(env, act_delay=kwargs["act_delay_dis"])
     elif kwargs["delay_mode"] == "obs":
-        print("!!! obs delay mode !!!",kwargs["obs_delay_dis"])
         env = ObsDelayWrapper(env, obs_delay=kwargs["obs_delay_dis"])
     elif kwargs["delay_mode"] == "both":
-        print("!!! both obs and act delay mode !!!",kwargs["act_delay_dis"],kwargs["obs_delay_dis"])
         env = ObsAndActDelayWrapper(env, act_delay=kwargs["act_delay_dis"], obs_delay=kwargs["obs_delay_dis"])
     
     print("Create environment successfully!")
@@ -65,11 +62,7 @@ def create_apprfunc(**kwargs):
     except NotImplementedError:
         raise NotImplementedError("This apprfunc does not exist")
 
-    # name = kwargs['name'].upper()
-
     name = formatter(kwargs["name"])
-    # print(name)
-    # print(kwargs)
 
     if hasattr(file, name):  #
         apprfunc_cls = getattr(file, name)
@@ -77,7 +70,6 @@ def create_apprfunc(**kwargs):
     else:
         raise NotImplementedError("This apprfunc is not properly defined")
 
-    # print("--Initialize appr func: " + name + "...")
     return apprfunc
 
 

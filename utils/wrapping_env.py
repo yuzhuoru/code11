@@ -82,22 +82,7 @@ def wrapping_env(
     obs_shift: Union[np.ndarray, float, list, None] = None,
     obs_scale: Union[np.ndarray, float, list, None] = None,
 ):
-    """Automatically wrap data type environment according to input arguments. Wrapper will not be used
-        if all corresponding parameters are set to None.
-    :param env: original data type environment.
-    :param Optional[int] max_episode_steps: parameter for gym.wrappers.time_limit.TimeLimit wrapper.
-        if it is set to None but environment has 'max_episode_steps' attribute, it will be filled in
-        TimeLimit wrapper alternatively.
-    :param Optional[float] reward_shift: parameter for reward shaping wrapper.
-    :param Optional[float] reward_scale: parameter for reward shaping wrapper.
-    :param Union[np.ndarray, float, list, None] obs_shift: parameter for observation scale wrapper.
-    :param Union[np.ndarray, float, list, None] obs_scale: parameter for observation scale wrapper.
-    :param Optional[str] obs_noise_type: parameter for observation noise wrapper.
-    :param Optional[list] obs_noise_data: parameter for observation noise wrapper.
-    :param Optional[int] repeat_num: parameter for action repeat wrapper.
-    :param Optional[bool] sum_reward: parameter for action repeat wrapper.
-    :return: wrapped data type environment.
-    """
+
     env = ResetInfoData(env)
     if max_episode_steps is None and hasattr(env, "max_episode_steps"):
         max_episode_steps = getattr(env, "max_episode_steps")
@@ -112,14 +97,12 @@ def wrapping_env(
         reward_shift = 0.0 if reward_shift is None else reward_shift
         env = ShapingRewardData(env, reward_shift, reward_scale)
 
-
     if not all_none(obs_shift, obs_scale):
         obs_scale = 1.0 if obs_scale is None else obs_scale
         obs_shift = 0.0 if obs_shift is None else obs_shift
         env = ScaleObservationData(env, obs_shift, obs_scale)
 
     return env
-
 
 class ScaleObservationData(gym.Wrapper):
     def __init__(
@@ -152,11 +135,6 @@ class ScaleObservationData(gym.Wrapper):
         return obs_scaled, r, terminated, truncated, info
 
 class ConvertType(gym.Wrapper):
-    """Wrapper converts data type of action and observation to satisfy requirements of original
-        environment and gops interface.
-    :param env: data type environment.
-    """
-
     def __init__(self, env):
         super(ConvertType, self).__init__(env)
         self.obs_data_tpye = env.observation_space.dtype

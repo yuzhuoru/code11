@@ -1,7 +1,7 @@
-Open source code of DADAC
+Open source code of D2AC
 
 How to run: \
-python dadac_main.py \
+python d2ac_main.py \
 --seed 1 \
 --env_id Reacher-v4 \
 --delay_mode obs \

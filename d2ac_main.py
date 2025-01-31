@@ -16,7 +16,7 @@ if __name__ == "__main__":
     ################################################
     # Key Parameters for users
     parser.add_argument("--env_id", type=str, default="Reacher-v4", help="id of environment")
-    parser.add_argument("--algorithm", type=str, default="DADAC", help="DADAC") 
+    parser.add_argument("--algorithm", type=str, default="D2AC", help="D2AC") 
     parser.add_argument("--enable_cuda", default=True, help="Enable CUDA")
     parser.add_argument("--seed", default=None)
     ################################################
@@ -159,4 +159,3 @@ if __name__ == "__main__":
 
     ################################################
     trainer.train()
-    print("Training is finished!")

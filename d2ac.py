@@ -1,4 +1,4 @@
-__all__ = ["ApproxContainer", "DADAC"]
+__all__ = ["ApproxContainer", "D2AC"]
 import time
 from copy import deepcopy
 from typing import Tuple, Dict
@@ -50,22 +50,7 @@ class ApproxContainer(torch.nn.Module):
         return self.policy.get_act_dist(logits)
 
 
-class DADAC:
-    """DADAC algorithm
-
-    Paper: https://ieeexplore.ieee.org/abstract/document/9448360
-
-    :param float gamma: discount factor.
-    :param float tau: param for soft update of target network.
-    :param bool auto_alpha: whether to adjust temperature automatically.
-    :param float alpha: initial temperature.
-    :param float TD_bound: the bound of temporal difference.
-    :param bool bound: whether to bound the q value.
-    :param float delay_update: delay update steps for actor.
-    :param Optional[float] target_entropy: target entropy for automatic
-        temperature adjustment.
-    """
-
+class D2AC:
     def __init__(self, **kwargs):
         super().__init__()
         self.networks = ApproxContainer(**kwargs)
@@ -209,13 +194,13 @@ class DADAC:
             loss_alpha.backward()
 
         tb_info = {
-            "DADAC/critic_avg_q-RL iter": q.item(),
-            "DADAC/critic_avg_std-RL iter": std.item(),
+            "D2AC/critic_avg_q-RL iter": q.item(),
+            "D2AC/critic_avg_std-RL iter": std.item(),
             tb_tags["loss_actor"]: loss_policy.item(),
-            "DADAC/policy_mean-RL iter": policy_mean,
-            "DADAC/policy_std-RL iter": policy_std,
-            "DADAC/entropy-RL iter": entropy.item(),
-            "DADAC/alpha-RL iter": self.__get_alpha(),
+            "D2AC/policy_mean-RL iter": policy_mean,
+            "D2AC/policy_std-RL iter": policy_std,
+            "D2AC/entropy-RL iter": entropy.item(),
+            "D2AC/alpha-RL iter": self.__get_alpha(),
             tb_tags["alg_time"]: (time.time() - start_time) * 1000,
         }
 
@@ -243,7 +228,6 @@ class DADAC:
             data["done"].to(device),
         )
 
-        #改__q_evaluate的输入
         q, q_std, q_sample = self.__q_evaluate(obs[0], act[0], self.networks.q)
 
         total_target_q = torch.zeros(obs.shape[1],device=device)
