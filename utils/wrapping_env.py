@@ -17,7 +17,6 @@ class ResetInfoData(gym.Wrapper):
     """
     This wrapper ensures that the 'reset' method returns a tuple (obs, info).
     """
-
     def reset(self, **kwargs) -> Tuple[ObsType, dict]:
         ret = self.env.reset(**kwargs)
         if isinstance(ret, tuple):
@@ -34,7 +33,6 @@ class ShapingRewardData(gym.Wrapper):
             parser.add_argument("--reward_scale", default=0.5)
             parser.add_argument("--reward_shift", default=0)
     """
-
     def __init__(self, env, reward_shift: float = 0.0, reward_scale: float = 1.0):
         super(ShapingRewardData, self).__init__(env)
         self.reward_shift = reward_shift
@@ -51,7 +49,6 @@ class StateData(gym.Wrapper):
     Wrapper ensures that environment has "state" property.
     If original environment does not have one, current observation is returned when calling state.
     """
-
     def __init__(self, env):
         super(StateData, self).__init__(env)
         self.current_obs = None

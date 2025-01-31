@@ -68,7 +68,7 @@ class ActDelayWrapper(gym.Wrapper):
         # at the remote actor
         _, _ = self.receive_action() 
         
-        m, r, terminated, truncated, info = self.env.step(self.next_action)  # before receive_action (e.g. rtrl setting with 0 delays)
+        m, r, terminated, truncated, info = self.env.step(self.next_action) 
         self.last_obs = m
         self.t += 1
         
@@ -77,7 +77,7 @@ class ActDelayWrapper(gym.Wrapper):
     def send_action(self, action, init=False):
         # at the brain
         trueDelay = self.act_delay_dis.dis_sample()
-        delay = trueDelay if not init else 0  # TODO: change this if we implement a different initialization
+        delay = trueDelay if not init else 0  
         self.arrival_times_actions.appendleft(self.t + trueDelay)
         
         self.past_actions.appendleft(action)

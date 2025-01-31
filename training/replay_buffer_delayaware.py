@@ -13,10 +13,6 @@ def combined_shape(length: int, shape=None):
     return (length, shape) if np.isscalar(shape) else (length, *shape)
 
 class ReplayBufferDelayaware:
-    """
-    Implementation of replay buffer with uniform sampling probability.
-    """
-
     def __init__(self, index=0, **kwargs):
        
         set_seed(kwargs["trainer"], kwargs["seed"], index + 100)

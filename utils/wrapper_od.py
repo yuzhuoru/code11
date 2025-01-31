@@ -12,7 +12,6 @@ from utils.delay_distribution import DoubleGaussianDistribution, GamaDistributio
 
 class ObsDelayWrapper(gym.Wrapper):
     """
-    Wrapper for any non-RTRL environment, modelling random observation delays
     NB: alpha refers to the observation delay, it is >= 0
     Kwargs:
         obs_delay_range: range in which alpha is sampled
@@ -65,7 +64,6 @@ class ObsDelayWrapper(gym.Wrapper):
         # at the brain
         true_obs = action
         if self.done_signal_sent:
-            # just resend the last observation until the brain gets it
             self.send_observation(self.past_observations[0])
         else:
             m, r, terminated, truncated, info = self.env.step(action)
@@ -74,7 +72,6 @@ class ObsDelayWrapper(gym.Wrapper):
             self.done_signal_sent = terminated or truncated
             self.send_observation((m, self.cum_rew_actor, terminated, truncated, info, 0))
 
-        # at the brain again
         m, cum_rew_actor_delayed, terminated, truncated, info = self.receive_observation()
         r = cum_rew_actor_delayed - self.cum_rew_brain
         self.cum_rew_brain = cum_rew_actor_delayed

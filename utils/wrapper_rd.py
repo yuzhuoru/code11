@@ -63,26 +63,20 @@ class ObsAndActDelayWrapper(gym.Wrapper):
         return received_observation, {}
 
     def step(self, action):
-        # at the brain
         self.send_action(action)
         true_obs = action
-        # at the remote actor
         if self.t < self.act_delay_dis.max_delay+1 and self.skip_initial_actions:
-            # assert False, "skip_initial_actions==True is not supported"
-            # do nothing until the brain's first actions arrive at the remote actor
             self.receive_action()
         elif self.done_signal_sent:
-            # just resend the last observation until the brain gets it
             self.send_observation(self.past_observations[0])
         else:
-            m, r, terminated, truncated, info = self.env.step(self.next_action)  # before receive_action (e.g. rtrl setting with 0 delays)
+            m, r, terminated, truncated, info = self.env.step(self.next_action)  
             true_obs = m
             kappa, beta = self.receive_action()
             self.cum_rew_actor += r
             self.done_signal_sent = terminated or truncated
             self.send_observation((m, self.cum_rew_actor, terminated, truncated, info, kappa, beta))
 
-        # at the brain again
         m, cum_rew_actor_delayed, terminated, truncated, info = self.receive_observation()
         r = cum_rew_actor_delayed - self.cum_rew_brain
         self.cum_rew_brain = cum_rew_actor_delayed
@@ -91,22 +85,18 @@ class ObsAndActDelayWrapper(gym.Wrapper):
         return m, r, terminated, truncated, info
 
     def send_action(self, action, init=False):
-        # at the brain
-        kappa = self.act_delay_dis.dis_sample() if not init else 0  # TODO: change this if we implement a different initialization
+        kappa = self.act_delay_dis.dis_sample() if not init else 0  
         self.arrival_times_actions.appendleft(self.t + kappa)
         self.past_actions.appendleft(action)
 
     def receive_action(self):
-        # CAUTION: from the brain point of view, the "previous action"'s age (kappa_t) is not like the previous "next action"'s age (beta_{t-1}) (e.g. repeated observations)
-        prev_action_idx = self.prev_action_idx + 1  # + 1 is to account for the fact that this was the right idx 1 time-step before
+        prev_action_idx = self.prev_action_idx + 1  
         next_action_idx = next(i for i, t in enumerate(self.arrival_times_actions) if t <= self.t)
         self.prev_action_idx = next_action_idx
         self.next_action = self.past_actions[next_action_idx]
-        # print(f"DEBUG: next_action_idx:{next_action_idx}, prev_action_idx:{prev_action_idx}")
         return next_action_idx, prev_action_idx
 
     def send_observation(self, obs):
-        # at the remote actor
         alpha = self.obs_delay_dis.dis_sample()
         self.arrival_times_observations.appendleft(self.t + alpha)
         self.past_observations.appendleft(obs)
