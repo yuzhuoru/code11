@@ -1,4 +1,4 @@
-#Comparative experimental results with Lazy-BPQL(Smoothed Training Curve)
+Comparative Experimental Results with Lazy-BPQL(Smoothed Training Curve)
 
 - Gamma Delay Environment
 ![Gamma Delay Environment](./additional_comparative_results/gama_delay.png)
