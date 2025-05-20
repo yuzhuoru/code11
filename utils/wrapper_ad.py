@@ -10,17 +10,17 @@ import numpy as np
 import copy
 import torch
 
-from utils.delay_distribution import DoubleGaussianDistribution, GamaDistribution, UniformDistribution
+from utils.delay_distribution import DoubleGaussianDistribution, GammaDistribution, UniformDistribution
 
 class ActDelayWrapper(gym.Wrapper):
 
-    def __init__(self, env, act_delay="gama", initial_action=None, skip_initial_actions=False):
+    def __init__(self, env, act_delay="gamma", initial_action=None, skip_initial_actions=False):
         super().__init__(env)
-        if act_delay == "gama":
-            self.act_delay_dis = GamaDistribution()
+        if act_delay == "gamma":
+            self.act_delay_dis = GammaDistribution()
         elif act_delay == "uniform":
             self.act_delay_dis = UniformDistribution()
-        elif act_delay =="DoubleGaussian":
+        elif act_delay =="doublegaussian":
             self.act_delay_dis = DoubleGaussianDistribution()
 
         self.wrapped_env = env

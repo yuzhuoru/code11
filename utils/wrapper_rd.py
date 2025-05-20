@@ -7,24 +7,24 @@ from gymnasium.spaces import Tuple, Discrete
 
 import numpy as np
 
-from utils.delay_distribution import DoubleGaussianDistribution, GamaDistribution, UniformDistribution
+from utils.delay_distribution import DoubleGaussianDistribution, GammaDistribution, UniformDistribution
 
 
 class ObsAndActDelayWrapper(gym.Wrapper):
-    def __init__(self, env, act_delay="gama", obs_delay="gama", initial_action=None, skip_initial_actions=False):
+    def __init__(self, env, act_delay="gamma", obs_delay="gamma", initial_action=None, skip_initial_actions=False):
         super().__init__(env)
-        if act_delay == "gama":
-            self.act_delay_dis = GamaDistribution()
+        if act_delay == "gamma":
+            self.act_delay_dis = GammaDistribution()
         elif act_delay == "uniform":
             self.act_delay_dis = UniformDistribution()
-        elif act_delay =="DoubleGaussian":
+        elif act_delay =="doublegaussian":
             self.act_delay_dis = DoubleGaussianDistribution()
 
-        if obs_delay == "gama":
-            self.obs_delay_dis = GamaDistribution()
+        if obs_delay == "gamma":
+            self.obs_delay_dis = GammaDistribution()
         elif obs_delay == "uniform":
             self.obs_delay_dis = UniformDistribution()
-        elif obs_delay =="DoubleGaussian":
+        elif obs_delay =="doublegaussian":
             self.obs_delay_dis = DoubleGaussianDistribution()
 
         self.wrapped_env = env
@@ -50,7 +50,7 @@ class ObsAndActDelayWrapper(gym.Wrapper):
         first_observation, _ = super().reset(**kwargs)
 
         # fill up buffers
-        self.t = - ((self.obs_delay_dis.max_delay + 1) + (self.act_delay_dis.max_delay + 1))  # this is <= -2
+        self.t = - ((self.obs_delay_dis.max_delay + 1) + (self.act_delay_dis.max_delay + 1))  
         while self.t < 0:
             act = self.action_space.sample() if self.initial_action is None else self.initial_action
             self.send_action(act, init=True)  # TODO : initialize this better

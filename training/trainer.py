@@ -19,12 +19,10 @@ class OffSerialTrainer:
         self.per_flag = kwargs["buffer_name"] == "prioritized_replay_buffer"
         self.evaluator = evaluator
 
-        # create center network
         self.networks = self.alg.networks
         self.sampler.networks = self.networks
         self.evaluator.networks = self.networks
 
-        # initialize center network
         if kwargs["ini_network_dir"] is not None:
             self.networks.load_state_dict(torch.load(kwargs["ini_network_dir"]))
 

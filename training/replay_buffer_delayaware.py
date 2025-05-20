@@ -2,10 +2,9 @@ import numpy as np
 import sys
 import torch
 from utils.common_utils import set_seed
-from utils.delay_distribution import DoubleGaussianDistribution, GamaDistribution, UniformDistribution
+from utils.delay_distribution import DoubleGaussianDistribution, GammaDistribution, UniformDistribution
 
 __all__ = ["ReplayBuffer_delayaware"]
-
 
 def combined_shape(length: int, shape=None):
     if shape is None:
@@ -48,36 +47,36 @@ class ReplayBufferDelayaware:
         
         #total max delay 
         if kwargs["delay_mode"] == "act":
-            if kwargs["act_delay_dis"] == "gama":
-                act_delay_dis = GamaDistribution()
+            if kwargs["act_delay_dis"] == "gamma":
+                act_delay_dis = GammaDistribution()
             elif kwargs["act_delay_dis"] == "uniform":
                 act_delay_dis = UniformDistribution()
-            elif kwargs["act_delay_dis"] == "DoubleGaussian":
+            elif kwargs["act_delay_dis"] == "doublegaussian":
                 act_delay_dis = DoubleGaussianDistribution()
             self.delay_max = act_delay_dis.max_delay
             
         elif kwargs["delay_mode"] == "obs":
-            if kwargs["obs_delay_dis"] == "gama":
-                obs_delay_dis = GamaDistribution()
+            if kwargs["obs_delay_dis"] == "gamma":
+                obs_delay_dis = GammaDistribution()
             elif kwargs["obs_delay_dis"] == "uniform":
                 obs_delay_dis = UniformDistribution()
-            elif kwargs["obs_delay_dis"] == "DoubleGaussian":
+            elif kwargs["obs_delay_dis"] == "doublegaussian":
                 obs_delay_dis = DoubleGaussianDistribution()
             self.delay_max = obs_delay_dis.max_delay
             
         elif kwargs["delay_mode"] == "both":
-            if kwargs["obs_delay_dis"] == "gama":
-                obs_delay_dis = GamaDistribution()
+            if kwargs["obs_delay_dis"] == "gamma":
+                obs_delay_dis = GammaDistribution()
             elif kwargs["obs_delay_dis"] == "uniform":
                 obs_delay_dis = UniformDistribution()
-            elif kwargs["obs_delay_dis"] == "DoubleGaussian":
+            elif kwargs["obs_delay_dis"] == "doublegaussian":
                 obs_delay_dis = DoubleGaussianDistribution()
 
-            if kwargs["act_delay_dis"] == "gama":
-                act_delay_dis = GamaDistribution()
+            if kwargs["act_delay_dis"] == "gamma":
+                act_delay_dis = GammaDistribution()
             elif kwargs["act_delay_dis"] == "uniform":
                 act_delay_dis = UniformDistribution()
-            elif kwargs["act_delay_dis"] == "DoubleGaussian":
+            elif kwargs["act_delay_dis"] == "doublegaussian":
                 act_delay_dis = DoubleGaussianDistribution()
             self.delay_max = obs_delay_dis.max_delay+act_delay_dis.max_delay
             

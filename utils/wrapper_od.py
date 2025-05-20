@@ -7,25 +7,19 @@ from gymnasium.spaces import Tuple, Discrete
 
 import numpy as np
 
-from utils.delay_distribution import DoubleGaussianDistribution, GamaDistribution, UniformDistribution
+from utils.delay_distribution import DoubleGaussianDistribution, GammaDistribution, UniformDistribution
 
 
 class ObsDelayWrapper(gym.Wrapper):
-    """
-    NB: alpha refers to the observation delay, it is >= 0
-    Kwargs:
-        obs_delay_range: range in which alpha is sampled
-        initial_action: action (default None): action with which the action buffer is filled at reset() (if None, sampled in the action space)
-    """
 
-    def __init__(self, env, obs_delay="gama", initial_action=None, skip_initial_actions=False):
+    def __init__(self, env, obs_delay="gamma", initial_action=None, skip_initial_actions=False):
         super().__init__(env)
 
-        if obs_delay == "gama":
-            self.obs_delay_dis = GamaDistribution()
+        if obs_delay == "gamma":
+            self.obs_delay_dis = GammaDistribution()
         elif obs_delay == "uniform":
             self.obs_delay_dis = UniformDistribution()
-        elif obs_delay =="DoubleGaussian":
+        elif obs_delay =="doublegaussian":
             self.obs_delay_dis = DoubleGaussianDistribution()
 
         self.wrapped_env = env
@@ -57,11 +51,7 @@ class ObsDelayWrapper(gym.Wrapper):
         return received_observation, {}
 
     def step(self, action):
-        """
-        Handles environment step with observation delay.
-        """
 
-        # at the brain
         true_obs = action
         if self.done_signal_sent:
             self.send_observation(self.past_observations[0])

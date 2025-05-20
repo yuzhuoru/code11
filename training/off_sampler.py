@@ -11,7 +11,6 @@ from utils.common_utils import set_seed
 from utils.explore_noise import GaussNoise, EpsilonGreedy
 from utils.tensorboard_setup import tb_tags
 
-
 class OffSampler:
     def __init__(self, index=0, **kwargs):
         # initialize necessary hyperparameters

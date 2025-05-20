@@ -1,15 +1,17 @@
 Open source code of D2AC
 
-How to run: \
+Instruction \
+
+Command:
 python d2ac_main.py \
 --seed 1 \
---env_id Reacher-v4 \
+--env_id Walker2d-v4 \
 --delay_mode obs \
---obs_delay_dis gama \
---act_delay_dis DoubleGaussian 
+--obs_delay_dis gamma \
 
-delay_mode option:obs/act/both \
-You can add or modify delay distributions in utils/delay_distribution.py 
+delay_mode option: obs/act/both \
+delay_dis option: gamma/uniform/doublegaussian \
+You can add or modify delay distributions in utils/delay_distribution.py \
 
 Environment requirements: \
 python==3.8.12 \

@@ -11,7 +11,7 @@ import torch.nn as nn
 from torch.distributions import Normal
 from torch.optim import Adam
 
-from utils.delay_distribution import GamaDistribution, UniformDistribution, DoubleGaussianDistribution
+from utils.delay_distribution import GammaDistribution, UniformDistribution, DoubleGaussianDistribution
 from utils.tensorboard_setup import tb_tags
 from utils.initialization import create_apprfunc
 from utils.common_utils import get_apprfunc_dict
@@ -66,41 +66,41 @@ class D2AC:
         self.delay_mode = kwargs["delay_mode"]
 
         if self.delay_mode == "act":
-            if kwargs["act_delay_dis"] == "gama":
-                act_delay_dis = GamaDistribution()
+            if kwargs["act_delay_dis"] == "gamma":
+                act_delay_dis = GammaDistribution()
             elif kwargs["act_delay_dis"] == "uniform":
                 act_delay_dis = UniformDistribution()
-            elif kwargs["act_delay_dis"] == "DoubleGaussian":
+            elif kwargs["act_delay_dis"] == "doublegaussian":
                 act_delay_dis = DoubleGaussianDistribution()       
             self.act_delay_probability = act_delay_dis.dis_probability()
             self.act_delay_max = act_delay_dis.max_delay
             
         elif self.delay_mode == "obs":
-            if kwargs["obs_delay_dis"] == "gama":
-                obs_delay_dis = GamaDistribution()
+            if kwargs["obs_delay_dis"] == "gamma":
+                obs_delay_dis = GammaDistribution()
             elif kwargs["obs_delay_dis"] == "uniform":
                 obs_delay_dis = UniformDistribution()
-            elif kwargs["obs_delay_dis"] == "DoubleGaussian":
+            elif kwargs["obs_delay_dis"] == "doublegaussian":
                 obs_delay_dis = DoubleGaussianDistribution()
             self.obs_delay_probability = obs_delay_dis.dis_probability()
             self.obs_delay_max = obs_delay_dis.max_delay
             
         elif self.delay_mode == "both":
-            if kwargs["obs_delay_dis"] == "gama":
-                obs_delay_dis = GamaDistribution()
+            if kwargs["obs_delay_dis"] == "gamma":
+                obs_delay_dis = GammaDistribution()
             elif kwargs["obs_delay_dis"] == "uniform":
                 obs_delay_dis = UniformDistribution()
-            elif kwargs["obs_delay_dis"] == "DoubleGaussian":
+            elif kwargs["obs_delay_dis"] == "doublegaussian":
                 obs_delay_dis = DoubleGaussianDistribution()
 
             self.obs_delay_probability = obs_delay_dis.dis_probability()
             self.obs_delay_max = obs_delay_dis.max_delay
 
-            if kwargs["act_delay_dis"] == "gama":
-                act_delay_dis = GamaDistribution()
+            if kwargs["act_delay_dis"] == "gamma":
+                act_delay_dis = GammaDistribution()
             elif kwargs["act_delay_dis"] == "uniform":
                 act_delay_dis = UniformDistribution()
-            elif kwargs["act_delay_dis"] == "DoubleGaussian":
+            elif kwargs["act_delay_dis"] == "doublegaussian":
                 act_delay_dis = DoubleGaussianDistribution()    
 
             self.act_delay_probability = act_delay_dis.dis_probability()

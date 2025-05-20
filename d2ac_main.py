@@ -1,6 +1,5 @@
 import argparse
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'
 import numpy as np
 from utils.initialization import create_alg,create_buffer,create_env
 from training.evaluator import create_evaluator
@@ -8,7 +7,6 @@ from training.off_sampler import create_sampler
 from training.trainer import create_trainer
 from utils.init_args import init_args
 from utils.tensorboard_setup import start_tensorboard, save_tb_to_csv
-os.environ["OMP_NUM_THREADS"] = "3"
 if __name__ == "__main__":
     # Parameters Setup
     parser = argparse.ArgumentParser()
@@ -135,8 +133,8 @@ if __name__ == "__main__":
     ################################################
     # 8. Delayed environment settings
     parser.add_argument("--delay_mode", type=str, default="obs", help="obs/act/both")
-    parser.add_argument("--act_delay_dis", type=str, default="gama", help="gama/uniform/DoubleGaussian")
-    parser.add_argument("--obs_delay_dis", type=str, default="gama", help="gama/uniform/DoubleGaussian")
+    parser.add_argument("--act_delay_dis", type=str, default="gamma", help="gamma/uniform/doublegaussian")
+    parser.add_argument("--obs_delay_dis", type=str, default="gamma", help="gamma/uniform/doublegaussian")
 
     # Get parameter dictionary
     args = vars(parser.parse_args())

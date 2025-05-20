@@ -1,6 +1,6 @@
 import numpy as np
 
-class GamaDistribution:
+class GammaDistribution:
     def __init__(self, max_delay=6):
 
         self.max_delay = max_delay
